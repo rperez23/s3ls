@@ -19,6 +19,8 @@ sub getBuckets
   #2020-06-27 15:30:16 s3-fremantle-ukmasters-or-1
   #2020-07-14 13:00:21 s3-fremantle-videomaster-or-1
 
+  @bList = ();
+
   $cmd = "aws s3 ls";
 
   unless (open CMD, "$cmd |")
@@ -30,12 +32,19 @@ sub getBuckets
   while(<CMD>)
   {
     chomp;
-    print("$_\n");
+
+    if (/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s+(.+)$/)
+    {
+      $bucket = $1;
+      push(@bList,$bucket);
+    }
+
   }
 
-  close(CMD)
+  close(CMD);
+
+  return (@bList);
 
 }
 
-
-&getBuckets;
+@bucketList = &getBuckets;
