@@ -69,9 +69,12 @@ sub runlscmd
   {
     chomp;
 
-    if (/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s+(.+)$/)
+    if (/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s+(\d+)\s+(.+)[^\/]$/)
     {
-      print("$1\n");
+      $size  = $1;
+      $fname = $2;
+
+      print("$size : $fname\n");
     }
 
   }
