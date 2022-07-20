@@ -47,19 +47,46 @@ sub getBuckets
 
 }
 
-@bucketList = &getBuckets;
-
-
-foreach $b (@bucketList)
+#run an ls of a bucket
+sub runlscmd
 {
+  $cmd    = $_[0];
+  $bucket = $_[1];
+
   #2022-02-22 13:17:57          0 Blackbird Ingest/
   #2022-02-28 10:54:59          0 Blackbird_Ingest_HD/
   #2022-04-11 17:58:17          0 Blackbird_Ingest_HD/Home Channel/
   #2022-02-28 10:55:43          0 Blackbird_Ingest_SD/
   #2022-02-28 11:12:12 25041107457 Blackbird_Ingest_SD/LMAD_EP3001_SR0003_YR2011_WB.mov
 
+  unless (open CMD, "$cmd |")
+  {
+    print("~~Cannot execute $cmd~~\n");
+    exit(1);
+  }
+
+  while(<CMD>)
+  {
+    chomp;
+
+    if (/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s+(.+)$/)
+    {
+      print("$1\n");
+    }
+
+  }
+
+  close(CMD);
+}
+
+@bucketList = &getBuckets;
+
+
+foreach $b (@bucketList)
+{
+
   $cmd = "aws s3 ls --recursive \"s3://$b\"";
 
-  
+  &runlscmd($cmd,$b)
 
 }
