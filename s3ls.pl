@@ -69,11 +69,10 @@ sub runlscmd
   {
     chomp;
 
-    if (/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s+(\d+)\s+(.+)[^\/]$/)
+    if (/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s+(\d+)\s+(.+)$/)
     {
       $size  = $1;
       $fname = "$bucket/$2";
-
       print("$fname\n");
     }
 
